@@ -8,12 +8,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase
 // 2. Click the Gear Icon (Project Settings) > General
 // 3. Scroll down to "Your apps", select the Web app (</>), and copy the config object here.
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "your-project-id.firebaseapp.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project-id.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyC7CAxk7ynY1llZr6jd-kqxbRxNTwLTj7o",
+  authDomain: "assetflow-enterprise-system.firebaseapp.com",
+  projectId: "assetflow-enterprise-system",
+  storageBucket: "assetflow-enterprise-system.firebasestorage.app",
+  messagingSenderId: "1003355056429",
+  appId: "1:1003355056429:web:57e0e12c1312fce3f50ba4",
+  measurementId: "G-G861SMDWRQ"
 };
 
 // Initialize Firebase App
