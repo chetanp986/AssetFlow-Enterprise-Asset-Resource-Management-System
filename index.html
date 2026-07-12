@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetFlow - Enterprise Asset Management</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        
+        <div id="login-section" class="auth-box">
+            <div class="brand-header">
+                <h1>AssetFlow</h1>
+                <p>Resource Management System</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="you@company.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+
+            <div class="auth-footer">
+                <button type="button" id="forgot-password-btn" class="text-link">Forgot Password?</button>
+                <p>New employee? <button type="button" id="show-signup-btn" class="text-link">Register here</button></p>
+            </div>
+        </div>
+
+        <div id="signup-section" class="auth-box hidden">
+            <div class="brand-header">
+                <h2>Create Account</h2>
+                <p class="role-notice">Note: All new accounts are provisioned with standard <strong>Employee</strong> access.</p>
+            </div>
+            
+            <form id="signup-form">
+                <div class="input-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="John Doe" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-department">Department</label>
+                    <select id="signup-department" required>
+                        <option value="" disabled selected>Select your department...</option>
+                        <option value="IT">IT & Engineering</option>
+                        <option value="Operations">Operations</option>
+                        <option value="HR">Human Resources</option>
+                        <option value="Finance">Finance</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="signup-email">Work Email</label>
+                    <input type="email" id="signup-email" placeholder="john.doe@company.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-password">Password (Min. 6 chars)</label>
+                    <input type="password" id="signup-password" required minlength="6">
+                </div>
+                
+                <button type="submit" class="btn-primary">Register as Employee</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <button type="button" id="show-login-btn" class="text-link">Back to Sign In</button></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>
