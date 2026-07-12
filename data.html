@@ -2,231 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Booking | Car Fleet System</title>
+    <title>Car Fleet 10-Day Data Injector</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --success: #10b981;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .form-container {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-header h2 {
-            margin: 0 0 8px 0;
-            font-size: 24px;
-            color: var(--text-main);
-        }
-
-        .form-header p {
-            margin: 0;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 15px;
-            box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--primary-hover);
-        }
-
-        #status-message {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: 500;
-            display: none;
-        }
-
-        .status-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
+        body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f6f9; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; max-width: 500px; }
+        button { background: #0056b3; color: white; border: none; padding: 15px 30px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; transition: background 0.3s; }
+        button:hover { background: #004494; }
+        #status { margin-top: 20px; font-weight: bold; color: #333; }
     </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ⚠️ REPLACE THIS WITH YOUR FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const db = getFirestore(initializeApp(firebaseConfig));
+
+        // 10-Day Car Booking Dataset
+        const bulkBookings = [
+            { date: "2026-07-01", bookingId: "BKG-7001", customerName: "Alice Chen", vehicle: "Tesla Model 3", serviceType: "Airport Transfer", amount: 65.00, status: "Completed" },
+            { date: "2026-07-02", bookingId: "BKG-7002", customerName: "Marcus Johnson", vehicle: "Toyota Camry", serviceType: "Daily Rental", amount: 45.00, status: "Completed" },
+            { date: "2026-07-03", bookingId: "BKG-7003", customerName: "Sarah Jenkins", vehicle: "Ford Transit", serviceType: "Group Tour", amount: 120.00, status: "Completed" },
+            { date: "2026-07-04", bookingId: "BKG-7004", customerName: "David Lee", vehicle: "Honda CR-V", serviceType: "Hourly Booking", amount: 35.00, status: "Canceled" },
+            { date: "2026-07-05", bookingId: "BKG-7005", customerName: "Emily Davis", vehicle: "BMW 5 Series", serviceType: "Executive Chauffeur", amount: 150.00, status: "Completed" },
+            { date: "2026-07-06", bookingId: "BKG-7006", customerName: "Michael Brown", vehicle: "Hyundai Tucson", serviceType: "Daily Rental", amount: 50.00, status: "Completed" },
+            { date: "2026-07-07", bookingId: "BKG-7007", customerName: "Jessica Wilson", vehicle: "Tesla Model Y", serviceType: "Airport Transfer", amount: 75.00, status: "Completed" },
+            { date: "2026-07-08", bookingId: "BKG-7008", customerName: "Robert Taylor", vehicle: "Chevrolet Malibu", serviceType: "Hourly Booking", amount: 25.00, status: "Completed" },
+            { date: "2026-07-09", bookingId: "BKG-7009", customerName: "Laura Martinez", vehicle: "Mercedes-Benz S-Class", serviceType: "Executive Chauffeur", amount: 180.00, status: "Active" },
+            { date: "2026-07-10", bookingId: "BKG-7010", customerName: "James Anderson", vehicle: "Toyota RAV4", serviceType: "Daily Rental", amount: 55.00, status: "Scheduled" }
+        ];
+
+        async function injectData() {
+            const statusEl = document.getElementById("status");
+            statusEl.innerText = "Uploading 10 days of bookings...";
+            statusEl.style.color = "#0056b3";
+
+            try {
+                // Using a Batch Write for faster, safer bulk injection
+                const batch = writeBatch(db);
+                const bookingsCollection = collection(db, "bookings");
+
+                for (const booking of bulkBookings) {
+                    const docRef = doc(bookingsCollection); // Auto-generates a document ID
+                    batch.set(docRef, {
+                        ...booking,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                // Commit all 10 records to the database at once
+                await batch.commit(); 
+                
+                statusEl.innerText = "✅ Successfully injected 10-day dataset!";
+                statusEl.style.color = "green";
+            } catch (e) {
+                statusEl.innerText = "❌ Error: " + e.message;
+                statusEl.style.color = "red";
+                console.error("Injection Error:", e);
+            }
+        }
+        
+        // Attach function to the window object so the HTML button can trigger it
+        window.injectData = injectData;
+    </script>
 </head>
 <body>
-
-    <div class="form-container">
-        <div class="form-header">
-            <h2>Add New Booking</h2>
-            <p>Enter the car rental or transfer details below.</p>
-        </div>
-
-        <form id="dataForm">
-            <div class="form-group">
-                <label for="customerName">Customer Name</label>
-                <input type="text" id="customerName" class="form-control" placeholder="e.g. Alice Chen" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="vehicle">Vehicle</label>
-                    <select id="vehicle" class="form-control" required>
-                        <option value="" disabled selected>Select vehicle...</option>
-                        <option value="Tesla Model 3">Tesla Model 3</option>
-                        <option value="Tesla Model Y">Tesla Model Y</option>
-                        <option value="Toyota Camry">Toyota Camry</option>
-                        <option value="Ford Transit">Ford Transit</option>
-                        <option value="BMW 5 Series">BMW 5 Series</option>
-                        <option value="Mercedes-Benz S-Class">Mercedes-Benz S-Class</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="serviceType">Service Type</label>
-                    <select id="serviceType" class="form-control" required>
-                        <option value="" disabled selected>Select service...</option>
-                        <option value="Airport Transfer">Airport Transfer</option>
-                        <option value="Daily Rental">Daily Rental</option>
-                        <option value="Hourly Booking">Hourly Booking</option>
-                        <option value="Executive Chauffeur">Executive Chauffeur</option>
-                        <option value="Group Tour">Group Tour</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="bookingDate">Booking Date</label>
-                    <input type="date" id="bookingDate" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="amount">Amount ($)</label>
-                    <input type="number" id="amount" class="form-control" step="0.01" min="0" placeholder="0.00" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select id="status" class="form-control" required>
-                    <option value="Scheduled" selected>Scheduled</option>
-                    <option value="Active">Active</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Canceled">Canceled</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn-submit">Save Booking Data</button>
-        </form>
-
-        <div id="status-message"></div>
+    <div class="card">
+        <h2>Car Fleet Bulk Data Generator</h2>
+        <p style="color: #666; margin-bottom: 25px;">Click below to populate your Firestore database with 10 dummy bookings.</p>
+        <button onclick="injectData()">Inject 10-Day Dataset</button>
+        <div id="status"></div>
     </div>
-
-    <script>
-        document.getElementById('dataForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent page reload
-
-            // Gather data from the form
-            const newBooking = {
-                bookingId: "BKG-" + Math.floor(1000 + Math.random() * 9000), // Generate random ID
-                customerName: document.getElementById('customerName').value,
-                vehicle: document.getElementById('vehicle').value,
-                serviceType: document.getElementById('serviceType').value,
-                date: document.getElementById('bookingDate').value,
-                amount: parseFloat(document.getElementById('amount').value),
-                status: document.getElementById('status').value
-            };
-
-            // In a real application, you would send this to Firebase/Backend here.
-            // Example: await addDoc(collection(db, "bookings"), newBooking);
-            
-            console.log("Data ready to be sent to database:", newBooking);
-
-            // Show success message
-            const statusDiv = document.getElementById('status-message');
-            statusDiv.textContent = `✅ Successfully added booking for ${newBooking.customerName} (${newBooking.bookingId})`;
-            statusDiv.className = 'status-success';
-            statusDiv.style.display = 'block';
-
-            // Reset form
-            this.reset();
-
-            // Hide message after 4 seconds
-            setTimeout(() => {
-                statusDiv.style.display = 'none';
-            }, 4000);
-        });
-    </script>
 </body>
 </html>
-
