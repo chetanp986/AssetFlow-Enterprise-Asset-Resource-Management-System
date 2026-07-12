@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Task Validation ---
+    function isValidTask(data) {
+      return data.keys().hasAll(['userId', 'title', 'status', 'createdAt']) &&
+             data.keys().size() <= 9 && // id, userId, title, description, status, priority, dueDate, createdAt, originalTranscript
+             data.userId is string && data.userId == request.auth.uid &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 500 &&
+             data.status in ['todo', 'doing', 'done'] &&
+             data.createdAt is timestamp &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 2000)) &&
+             (!('priority' in data) || (data.priority in ['low', 'medium', 'high'])) &&
+             (!('dueDate' in data) || (data.dueDate is timestamp || data.dueDate == null)) &&
+             (!('originalTranscript' in data) || (data.originalTranscript is string && data.originalTranscript.size() <= 5000));
+    }
+
+    // --- Collection Rules ---
+    match /tasks/{taskId} {
+      allow get: if isOwner(existing().userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      allow create: if isSignedIn() && 
+                      isValidId(taskId) && 
+                      isValidTask(incoming()) && 
+                      incoming().createdAt == request.time;
+      
+      allow update: if isSignedIn() &&
+                      isOwner(existing().userId) &&
+                      isValidTask(incoming()) &&
+                      incoming().userId == existing().userId &&
+                      incoming().createdAt == existing().createdAt &&
+                      (
+                        // Action: Update Status
+                        (incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])) ||
+                        // Action: Edit Content
+                        (incoming().diff(existing()).affectedKeys().hasOnly(['title', 'description', 'priority', 'dueDate', 'updatedAt']))
+                      );
+
+      allow delete: if isOwner(existing().userId);
+    }
+
+    match /test/connection {
+      allow get: if true; // Used for connectivity check
+    }
+  }
+}
