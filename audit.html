@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetFlow | Audit Cycles</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/audit.css">
+</head>
+<body class="app-layout">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+        <div id="navbar-container"></div>
+
+        <div class="page-header flex-between">
+            <div>
+                <h1>Asset Audit & Reconciliation</h1>
+                <p>Verify physical assets and flag discrepancies.</p>
+            </div>
+            <button id="btn-toggle-audit" class="btn-primary">Start New Audit Cycle</button>
+        </div>
+
+        <div id="audit-progress-container" class="progress-container" style="display: none;">
+            <div class="progress-header">
+                <h3 id="current-audit-name">Loading Cycle...</h3>
+                <span id="audit-stats">0 / 0 Verified</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="audit-grid">
+            <section class="checklist-panel">
+                <h2>Pending Verification</h2>
+                <div class="filter-bar-mini">
+                    <input type="text" id="audit-search" placeholder="Scan or type asset tag...">
+                </div>
+                <div class="table-container">
+                    <table id="checklist-table">
+                        <thead>
+                            <tr>
+                                <th>Tag</th>
+                                <th>Asset Name</th>
+                                <th>Expected Dept</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checklist-tbody">
+                            <tr><td colspan="4">No active audit cycle.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="discrepancy-panel">
+                <h2>Discrepancies & Flagged Items</h2>
+                <div id="discrepancy-container" class="discrepancy-container">
+                    <div class="empty-state">No discrepancies found yet.</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="js/core/app.js"></script>
+    <script type="module" src="js/core/rbac.js"></script>
+    <script type="module" src="js/pages/audit.js"></script>
+</body>
+</html>

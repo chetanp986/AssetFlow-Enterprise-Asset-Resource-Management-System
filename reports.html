@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetFlow | Reports</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/reports.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="app-layout">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+        <div id="navbar-container"></div>
+
+        <div class="page-header flex-between">
+            <div>
+                <h1>Analytics & Reports</h1>
+                <p>Visualize system utilization and export data.</p>
+            </div>
+            <button id="btn-export-csv" class="btn-primary">📥 Export Assets to CSV</button>
+        </div>
+
+        <div class="reports-grid">
+            <section class="chart-panel">
+                <h2>Asset Status Distribution</h2>
+                <div class="canvas-container">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </section>
+
+            <section class="chart-panel">
+                <h2>Assets by Department</h2>
+                <div class="canvas-container">
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </section>
+            
+            <section class="chart-panel full-width">
+                <h2>Category Breakdown</h2>
+                <div class="canvas-container canvas-large">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="js/core/app.js"></script>
+    <script type="module" src="js/core/rbac.js"></script>
+    <script type="module" src="js/pages/reports.js"></script>
+</body>
+</html>

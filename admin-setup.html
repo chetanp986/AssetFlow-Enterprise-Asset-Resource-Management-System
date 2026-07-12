@@ -3,164 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organization Setup - AssetFlow</title>
+    <title>AssetFlow | Admin Setup</title>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/admin.css"> </head>
-<body>
-    <nav class="sidebar">
-        <div class="brand-header">
-            <h2>AssetFlow</h2>
-        </div>
-        <ul class="nav-links">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="assets.html">Asset Directory</a></li>
-            <li><a href="allocations.html">Allocations & Transfers</a></li>
-            <li><a href="bookings.html">Resource Booking</a></li>
-            <li><a href="maintenance.html">Maintenance</a></li>
-            <li class="active" id="nav-admin-setup"><a href="admin-setup.html">Organization Setup</a></li>
-        </ul>
-        <div class="user-profile">
-            <p id="user-name">Loading...</p>
-            <small id="user-role">Admin</small>
-            <button id="logout-btn" class="text-link">Sign Out</button>
-        </div>
-    </nav>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="app-layout">
+    <div id="sidebar-container"></div>
 
     <main class="main-content">
-        <header class="top-header">
-            <h1>Organization Setup</h1>
-            <p>Master Data & Access Control</p>
-        </header>
+        <div id="navbar-container"></div>
 
-        <div class="tab-container">
-            <button class="tab-btn active" onclick="openTab('departments')">Departments</button>
-            <button class="tab-btn" onclick="openTab('categories')">Asset Categories</button>
-            <button class="tab-btn" onclick="openTab('employees')">Employee Directory</button>
+        <div class="page-header">
+            <h1>Organization Setup</h1>
+            <p>Manage system categories, departments, and user roles.</p>
         </div>
 
-        <section id="departments" class="tab-content active">
-            <div class="split-layout">
-                <div class="card form-card">
-                    <h3>Add New Department</h3>
-                    <form id="add-dept-form">
-                        <div class="input-group">
-                            <label>Department Name</label>
-                            <input type="text" id="dept-name" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Parent Department (Optional)</label>
-                            <select id="dept-parent">
-                                <option value="">None</option>
-                                </select>
-                        </div>
-                        <button type="submit" class="btn-primary">Save Department</button>
-                    </form>
-                </div>
-                <div class="card table-card">
-                    <h3>Active Departments</h3>
-                    <table class="data-table">
+        <div class="admin-grid">
+            <section class="admin-panel">
+                <h2>Asset Categories</h2>
+                <form id="form-category" class="admin-form">
+                    <input type="text" id="new-category" placeholder="e.g., Laptops" required>
+                    <button type="submit" class="btn-primary-small">Add</button>
+                </form>
+                <ul id="list-categories" class="data-list">
+                    <li>Loading...</li>
+                </ul>
+            </section>
+
+            <section class="admin-panel">
+                <h2>Departments</h2>
+                <form id="form-department" class="admin-form">
+                    <input type="text" id="new-department" placeholder="e.g., Engineering" required>
+                    <button type="submit" class="btn-primary-small">Add</button>
+                </form>
+                <ul id="list-departments" class="data-list">
+                    <li>Loading...</li>
+                </ul>
+            </section>
+
+            <section class="admin-panel full-width">
+                <h2>User Management</h2>
+                <div class="table-container">
+                    <table id="users-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Head</th>
-                                <th>Status</th>
+                                <th>Name / Email</th>
+                                <th>Current Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="dept-table-body">
-                            </tbody>
+                        <tbody id="users-tbody">
+                            <tr><td colspan="3">Loading users...</td></tr>
+                        </tbody>
                     </table>
                 </div>
-            </div>
-        </section>
-
-        <section id="categories" class="tab-content hidden">
-            <div class="split-layout">
-                <div class="card form-card">
-                    <h3>Create Asset Category</h3>
-                    <form id="add-category-form">
-                        <div class="input-group">
-                            <label>Category Name</label>
-                            <input type="text" id="cat-name" placeholder="e.g., Electronics" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Custom Field (Optional)</label>
-                            <input type="text" id="cat-custom" placeholder="e.g., Warranty Period">
-                        </div>
-                        <button type="submit" class="btn-primary">Create Category</button>
-                    </form>
-                </div>
-                <div class="card table-card">
-                    <h3>Managed Categories</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Category Name</th>
-                                <th>Custom Field</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cat-table-body">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="employees" class="tab-content hidden">
-            <div class="card table-card full-width">
-                <div class="card-header-flex">
-                    <h3>Employee Access Management</h3>
-                    <p class="role-notice">Note: Assign 'Asset Manager' or 'Department Head' roles here.</p>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Role Access</th>
-                            <th>Status</th>
-                            <th>Update</th>
-                        </tr>
-                    </thead>
-                    <tbody id="employee-table-body">
-                        <tr>
-                            <td>John Doe</td>
-                            <td>john@company.com</td>
-                            <td>IT</td>
-                            <td>
-                                <select class="role-select">
-                                    <option value="Employee">Employee</option>
-                                    <option value="Department Head">Department Head</option>
-                                    <option value="Asset Manager">Asset Manager</option>
-                                    <option value="Admin">Admin</option>
-                                </select>
-                            </td>
-                            <td><span class="badge active">Active</span></td>
-                            <td><button class="btn-small save-role-btn">Save</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
+            </section>
+        </div>
     </main>
 
-    <script type="module" src="js/firebase-config.js"></script>
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/admin.js"></script>
-    
-    <script>
-        function openTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Show the selected tab
-            document.getElementById(tabName).classList.remove('hidden');
-            event.currentTarget.classList.add('active');
-        }
-    </script>
+    <script type="module" src="js/core/app.js"></script>
+    <script type="module" src="js/core/rbac.js"></script> <script type="module" src="js/pages/admin-setup.js"></script>
 </body>
 </html>

@@ -3,148 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allocations & Transfers - AssetFlow</title>
+    <title>AssetFlow | Allocations</title>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/allocations.css"> </head>
-<body>
-    <nav class="sidebar">
-        <div class="brand-header">
-            <h2>AssetFlow</h2>
-        </div>
-        <ul class="nav-links">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="assets.html">Asset Directory</a></li>
-            <li class="active"><a href="allocations.html">Allocations & Transfers</a></li>
-            <li><a href="bookings.html">Resource Booking</a></li>
-            <li><a href="maintenance.html">Maintenance</a></li>
-            <li id="nav-admin-setup" class="hidden"><a href="admin-setup.html">Organization Setup</a></li>
-        </ul>
-        <div class="user-profile">
-            <p id="user-name">Loading...</p>
-            <small id="user-role">Role</small>
-            <button id="logout-btn" class="text-link">Sign Out</button>
-        </div>
-    </nav>
+    <link rel="stylesheet" href="css/allocations.css">
+</head>
+<body class="app-layout">
+    <div id="sidebar-container"></div>
 
     <main class="main-content">
-        <header class="top-header">
-            <div>
-                <h1>Allocations & Transfers</h1>
-                <p>Manage asset assignments and handle transfer requests</p>
-            </div>
-        </header>
+        <div id="navbar-container"></div>
 
-        <div class="split-layout">
-            <section class="card form-card">
-                <h3>Assign Asset</h3>
-                <form id="allocation-form">
+        <div class="page-header">
+            <h1>Asset Allocations</h1>
+            <p>Assign available assets to employees and track returns.</p>
+        </div>
+
+        <div class="allocation-grid">
+            <section class="action-panel">
+                <h2>Assign an Asset</h2>
+                <form id="form-allocate">
                     <div class="input-group">
-                        <label>Asset Tag or Serial Number</label>
-                        <input type="text" id="alloc-asset-id" placeholder="e.g. AF-0001" required>
-                        <small id="asset-status-msg" class="text-muted">Type to check availability...</small>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>Assign To (Employee / Department)</label>
-                        <select id="alloc-assignee" required>
-                            <option value="" disabled selected>Select Employee...</option>
-                            </select>
+                        <label for="select-asset">Available Assets</label>
+                        <select id="select-asset" required>
+                            <option value="">Loading available assets...</option>
+                        </select>
                     </div>
 
                     <div class="input-group">
-                        <label>Expected Return Date (Optional)</label>
-                        <input type="date" id="alloc-return-date">
+                        <label for="select-user">Assignee</label>
+                        <select id="select-user" required>
+                            <option value="">Loading employees...</option>
+                        </select>
                     </div>
-                    
-                    <button type="submit" id="btn-allocate" class="btn-primary">Confirm Allocation</button>
-                    
-                    <button type="button" id="btn-transfer-request" class="btn-warning hidden">Submit Transfer Request Instead</button>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="checkout-date">Checkout Date</label>
+                            <input type="date" id="checkout-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="due-date">Expected Return</label>
+                            <input type="date" id="due-date" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-100">Allocate Asset</button>
                 </form>
             </section>
 
-            <section class="card table-card">
-                <h3>Pending Transfer Requests</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Asset</th>
-                            <th>Current Holder</th>
-                            <th>Requested By</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transfer-table-body">
-                        <tr>
-                            <td>MacBook (AF-0114)</td>
-                            <td>Priya S.</td>
-                            <td>Raj K.</td>
-                            <td>
-                                <button class="btn-small success">Approve</button>
-                                <button class="btn-small danger">Deny</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <section class="table-panel">
+                <h2>Currently Checked Out</h2>
+                <div class="table-container">
+                    <table id="allocations-table">
+                        <thead>
+                            <tr>
+                                <th>Asset Tag / Name</th>
+                                <th>Assigned To</th>
+                                <th>Due Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allocations-tbody">
+                            <tr><td colspan="4">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </div>
-
-        <section class="card mt-4">
-            <div class="card-header-flex">
-                <h3>Active Allocations</h3>
-                <div class="filter-group">
-                    <input type="text" id="search-allocation" placeholder="Search by name or tag...">
-                </div>
-            </div>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Asset Tag</th>
-                        <th>Assigned To</th>
-                        <th>Assigned Date</th>
-                        <th>Expected Return</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="active-allocations-body">
-                    </tbody>
-            </table>
-        </section>
     </main>
 
-    <div id="return-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Return Asset</h2>
-                <button id="close-return-modal" class="close-btn">&times;</button>
-            </div>
-            <form id="return-asset-form">
-                <p>Returning: <strong id="return-asset-name">AF-0001</strong> from <strong id="return-user-name">Employee</strong></p>
-                
-                <div class="input-group mt-4">
-                    <label>Check-in Condition</label>
-                    <select id="return-condition" required>
-                        <option value="Good">Good (No damage)</option>
-                        <option value="Fair">Fair (Minor wear)</option>
-                        <option value="Poor">Poor (Needs repair)</option>
-                        <option value="Damaged">Damaged / Broken</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Check-in Notes (Required if Damaged)</label>
-                    <textarea id="return-notes" rows="3" placeholder="Describe any issues..."></textarea>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn-primary">Confirm Return</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script type="module" src="js/firebase-config.js"></script>
-    <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/allocations.js"></script>
+    <script type="module" src="js/core/app.js"></script>
+    <script type="module" src="js/core/rbac.js"></script>
+    <script type="module" src="js/pages/allocations.js"></script>
 </body>
 </html>

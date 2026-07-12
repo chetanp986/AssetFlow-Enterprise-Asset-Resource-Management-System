@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetFlow | System Logs</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/logs.css">
+</head>
+<body class="app-layout">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+        <div id="navbar-container"></div>
+
+        <div class="page-header">
+            <h1>System Logs</h1>
+            <p>Real-time audit trail of all platform activity.</p>
+        </div>
+
+        <div class="logs-container">
+            <div class="filter-bar">
+                <input type="text" id="search-log" placeholder="Search by user or details...">
+                <select id="filter-type">
+                    <option value="">All Actions</option>
+                    <option value="CREATE">CREATE</option>
+                    <option value="UPDATE">UPDATE</option>
+                    <option value="DELETE">DELETE</option>
+                    <option value="SYSTEM">SYSTEM</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table id="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Action</th>
+                            <th>User</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-tbody">
+                        <tr><td colspan="4">Loading system logs...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/core/app.js"></script>
+    <script type="module" src="js/core/rbac.js"></script>
+    <script type="module" src="js/pages/logs.js"></script>
+</body>
+</html>

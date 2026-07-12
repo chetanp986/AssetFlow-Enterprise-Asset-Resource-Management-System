@@ -1,0 +1,160 @@
+/* =========================================
+   Audit & Discrepancy Specific Styling
+   Note: Inherits variables from global.css
+   ========================================= */
+
+/* Progress Bar UI */
+.progress-container {
+    background: var(--surface-white);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.progress-header h3 { 
+    margin: 0; 
+    font-size: 1.2rem; 
+    color: var(--text-main); 
+}
+
+.progress-header span { 
+    font-weight: 600; 
+    color: var(--text-muted); 
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--success-color);
+    /* cubic-bezier gives it a very satisfying, premium "snap" into place */
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+/* Grid Layout */
+.audit-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.checklist-panel, .discrepancy-panel {
+    background: var(--surface-white);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.checklist-panel h2, .discrepancy-panel h2 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
+}
+
+.filter-bar-mini input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.25rem;
+    font-family: monospace;
+    font-size: 0.95rem;
+    outline: none;
+    color: var(--text-main);
+}
+
+.filter-bar-mini input:focus {
+    border-color: var(--primary-color);
+}
+
+/* Action Buttons (Using soft backgrounds with full-color hover states) */
+.btn-verify {
+    padding: 0.35rem 0.75rem;
+    background: #d4edda;
+    color: var(--success-color);
+    border: 1px solid #c3e6cb;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-verify:hover { 
+    background: var(--success-color); 
+    color: white; 
+}
+
+.btn-flag {
+    padding: 0.35rem 0.75rem;
+    background: #f8d7da;
+    color: var(--danger-color);
+    border: 1px solid #f5c6cb;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-flag:hover { 
+    background: var(--danger-color); 
+    color: white; 
+}
+
+/* Discrepancy Cards */
+.discrepancy-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.flag-card {
+    background: #fff3cd;
+    border-left: 4px solid var(--warning-color);
+    padding: 1.25rem;
+    border-radius: var(--radius-sm);
+    animation: slideIn 0.3s ease-out; /* Adds a nice pop when a discrepancy is logged */
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.flag-card h4 { 
+    margin: 0 0 0.5rem 0; 
+    font-size: 1rem; 
+    color: #856404; 
+}
+
+.flag-card p { 
+    margin: 0; 
+    font-size: 0.85rem; 
+    color: #555; 
+    line-height: 1.4;
+}
+
+/* Responsive Collapse */
+@media (max-width: 900px) {
+    .audit-grid {
+        grid-template-columns: 1fr;
+    }
+}
