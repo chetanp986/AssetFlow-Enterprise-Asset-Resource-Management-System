@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetFlow Bulk Data Injector</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; background: #f4f6f9; }
+        .card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; max-width: 500px; }
+        button { background: #0056b3; color: white; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #004085; }
+        #status { margin-top: 20px; font-weight: bold; color: #333; min-height: 50px; }
+        .success { color: green !important; }
+        .error { color: red !important; }
+    </style>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Your Exact Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7CAxk7ynY11lZr6jd-kqxbrNxTWLtJ7o",
+            authDomain: "assetflow-enterprise-system.firebaseapp.com",
+            projectId: "assetflow-enterprise-system",
+            storageBucket: "assetflow-enterprise-system.appspot.com",
+            messagingSenderId: "338905391166",
+            appId: "1:338905391166:web:8de488f553ab1ee45de4fa"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 3 Days of Realistic Data Arrays
+        const assetsData = [
+            // --- DAY 1 DATA ---
+            { assetName: "Alienware Aurora R15 Design Rig", category: "Workstations", status: "Allocated", description: "High-end development machine with RTX 4090 optimized for 3D modeling and cinematic rendering.", dueDate: "2026-07-11" },
+            { assetName: "Dell PowerEdge T150 Server", category: "Servers / Networking", status: "Available", description: "Local architecture hosting node used for full-stack testing environment setups.", dueDate: "" },
+            
+            // --- DAY 2 DATA ---
+            { assetName: "MacBook Pro M3 Max", category: "Laptops", status: "Allocated", description: "High-spec programming machine utilized for algorithm development and systems testing.", dueDate: "2026-07-25" },
+            { assetName: "Epson Pro EX7280 Projector", category: "Peripherals", status: "Maintenance", description: "Portable presentation projector deployed for engineering lecture modules.", dueDate: "" },
+            
+            // --- DAY 3 DATA ---
+            { assetName: "iPad Pro 12.9 (6th Gen)", category: "Tablets", status: "Available", description: "Vector asset creation device for campaign poster illustrations and graphic drafts.", dueDate: "" }
+        ];
+
+        const maintenanceData = [
+            { assetName: "Epson Pro EX7280 Projector", issueDescription: "Lamp bulb flickering intermittently during long presentation sessions.", severity: "Medium", status: "Open", dateSubmitted: "2026-07-12" }
+        ];
+
+        async function injectData() {
+            const statusDiv = document.getElementById("status");
+            statusDiv.innerHTML = "🔄 Accessing database and uploading items...";
+            statusDiv.className = "";
+
+            try {
+                // Upload Assets
+                for (const asset of assetsData) {
+                    await addDoc(collection(db, "assets"), asset);
+                }
+
+                // Upload Maintenance Tickets
+                for (const ticket of maintenanceData) {
+                    await addDoc(collection(db, "maintenance"), ticket);
+                }
+
+                statusDiv.innerHTML = "✅ Success! 3 days of development, hardware, and structural asset data successfully written to Firestore!";
+                statusDiv.className = "success";
+            } catch (error) {
+                console.error(error);
+                statusDiv.innerHTML = "❌ Error uploading data. Check the browser console panel for details.";
+                statusDiv.className = "error";
+            }
+        }
+
+        window.injectData = injectData;
+    </script>
+</head>
+<body>
+
+    <div class="card">
+        <h2>AssetFlow Data Generator</h2>
+        <p>Click the button below to automatically generate 3 days of development assets, inventory assignments, and maintenance requests inside your Firestore database panels.</p>
+        <button onclick="injectData()">Inject 3 Days of Test Data</button>
+        <div id="status"></div>
+    </div>
+
+</body>
+</html>
