@@ -1,9 +1,11 @@
-/* =========================================
-   Dashboard Specific Styling
-   Note: Inherits variables from global.css
-   ========================================= */
+/* ============================================================================
+   ASSETFLOW - DASHBOARD SPECIFIC STYLING
+   Note: Inherits design tokens and root variables from global.css
+   ============================================================================ */
 
-/* KPI Grid */
+/* ============================================================================
+   1. KPI METRIC GRID & CARDS
+   ============================================================================ */
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -16,13 +18,13 @@
     padding: 1.5rem;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    border-left: 5px solid var(--border-color); /* Default */
+    border-left: 5px solid var(--border-color); /* Fallback default border */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .kpi-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .kpi-card h3 {
@@ -40,12 +42,15 @@
     color: var(--text-main);
 }
 
-/* Status Colors for KPI Cards */
-.status-active { border-left-color: var(--success-color); }
+/* KPI Card Status Accent Borders */
+.status-active      { border-left-color: var(--success-color); }
 .status-maintenance { border-left-color: var(--warning-color); }
-.status-danger { border-left-color: var(--danger-color); }
+.status-danger      { border-left-color: var(--danger-color); }
 
-/* Dashboard Split Layout */
+
+/* ============================================================================
+   2. DASHBOARD SPLIT LAYOUT (Alerts & Quick Actions)
+   ============================================================================ */
 .dashboard-split {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -53,14 +58,16 @@
     align-items: start;
 }
 
-.alerts-section, .quick-actions {
+.alerts-section, 
+.quick-actions {
     background: var(--surface-white);
     padding: 1.5rem;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
 }
 
-.alerts-section h2, .quick-actions h2 {
+.alerts-section h2, 
+.quick-actions h2 {
     margin-top: 0;
     font-size: 1.2rem;
     border-bottom: 1px solid var(--border-color);
@@ -69,7 +76,10 @@
     color: var(--text-main);
 }
 
-/* Quick Action Buttons */
+
+/* ============================================================================
+   3. QUICK ACTION BUTTONS
+   ============================================================================ */
 .action-buttons {
     display: flex;
     flex-direction: column;
@@ -86,19 +96,22 @@
     color: var(--text-main);
     text-align: left;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
 }
 
 .btn-action:hover {
     background: #e9ecef;
-    border-color: #ccc;
-    transform: translateX(4px); /* Slight nudge right on hover */
+    border-color: #ced4da;
+    transform: translateX(4px); /* Subtle directional nudge */
 }
 
-/* Dashboard Specific Table Tweaks */
+
+/* ============================================================================
+   4. DASHBOARD TABLES & UTILITY BUTTONS
+   ============================================================================ */
 #overdue-table td {
     vertical-align: middle;
 }
@@ -106,20 +119,23 @@
 .btn-small {
     padding: 0.35rem 0.75rem;
     background: var(--primary-color);
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 500;
-    transition: background 0.2s;
+    transition: background 0.2s ease;
 }
 
 .btn-small:hover {
     background: var(--primary-hover);
 }
 
-/* Responsive collapse for smaller screens */
+
+/* ============================================================================
+   5. RESPONSIVE MEDIA QUERIES
+   ============================================================================ */
 @media (max-width: 1024px) {
     .dashboard-split {
         grid-template-columns: 1fr;
